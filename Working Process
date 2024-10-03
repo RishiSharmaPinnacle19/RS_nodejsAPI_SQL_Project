@@ -1,0 +1,46 @@
+Here's a step-by-step explanation of how your Node.js Media Management API code works:
+
+### 1. **Project Structure**
+   - **index.js**: The main entry point of the application where the server is created and routes are defined.
+   - **routes/mediaRoutes.js**: Contains route definitions for handling media-related requests.
+   - **controllers/mediaController.js**: Contains the logic for handling requests and interacting with the data model.
+   - **models/mediaModel.js**: Contains database interaction logic to perform CRUD operations.
+   - **config/db.js**: Manages the connection to the MySQL database.
+
+### 2. **Starting the Server (index.js)**
+   - **Setup**: The application starts by requiring necessary modules, including Express and the routes file.
+   - **Middleware**: `app.use(express.json())` is called to parse incoming JSON requests, allowing the server to handle JSON data.
+   - **Routing**: The API routes are prefixed with `/api` and managed by the `mediaRoutes` file.
+   - **Server Listening**: Finally, `app.listen(PORT, () => {...})` starts the server, listening on the specified port (defaulting to 3000 if not defined).
+
+### 3. **Defining Routes (routes/mediaRoutes.js)**
+   - The routes are set up using Express Router:
+     - **POST /api/media**: Calls `createMedia` to create a new media entry.
+     - **GET /api/media/:mobile_number**: Calls `getMediaByMobileNumber` to retrieve media by mobile number.
+     - **PUT /api/media/:mobile_number**: Calls `updateMediaByMobileNumber` to update a media entry.
+     - **DELETE /api/media/:media_id**: Calls `deleteMediaByMediaId` to delete a media entry.
+
+### 4. **Handling Requests (controllers/mediaController.js)**
+   - Each route corresponds to a controller function:
+     - **createMedia**: Extracts data from the request body and calls the `create` method from the model to insert a new record into the database.
+     - **getMediaByMobileNumber**: Uses the mobile number from the route parameters to query the database for a specific media entry.
+     - **updateMediaByMobileNumber**: Updates the media record by calling the `updateByMobileNumber` method from the model with the provided data.
+     - **deleteMediaByMediaId**: Deletes a media record based on the media ID passed in the request.
+
+### 5. **Database Interaction (models/mediaModel.js)**
+   - The model defines methods to interact with the MySQL database:
+     - **create**: Inserts a new media entry using an SQL `INSERT` query.
+     - **findByMobileNumber**: Fetches media entries by mobile number using an SQL `SELECT` query.
+     - **updateByMobileNumber**: Updates an existing media entry using an SQL `UPDATE` query.
+     - **deleteByMediaId**: Deletes a media entry based on the media ID using an SQL `DELETE` query.
+
+### 6. **Database Configuration (config/db.js)**
+   - This file manages the connection to the MySQL database using the `mysql2` package, ensuring that queries can be executed against the database.
+
+### Summary of Workflow:
+1. The client sends an HTTP request to one of the defined routes (e.g., creating a media entry).
+2. The request is handled by the corresponding controller function.
+3. The controller interacts with the model to perform the necessary database operations.
+4. The model executes SQL queries and returns the results to the controller.
+5. The controller sends the appropriate HTTP response back to the client.
+
